@@ -58,7 +58,11 @@ class CheckInViewController: UIViewController {
             
             do {
                 try self.appDelegate.managedObjectContext.save()
-                let url:NSURL = NSURL(string: "http://www.whitecoatlabs.co/checkin/glamour/mobile_api/post_checkinEvent.php")!
+                // DEVELOP
+                let url:NSURL = NSURL(string: "http://whitecoatlabs.co/checkin/develop/mobile_api/post_checkinEvent.php")!
+
+                // LIVE
+                //let url:NSURL = NSURL(string: "http://www.whitecoatlabs.co/checkin/glamour/mobile_api/post_checkinEvent.php")!
                 let session = NSURLSession.sharedSession()
                 let request = NSMutableURLRequest(URL: url)
                 request.HTTPMethod = "POST"
