@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "123EAA09BA10C478095F593F73440454C35FB9CA",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "C363473A3EE3E428C0E484AEE9AB6448804E72DF" : 0,
+    "123EAA09BA10C478095F593F73440454C35FB9CA" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "BA5355B7-988A-4654-86F3-A9AB2277B7A9",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "C363473A3EE3E428C0E484AEE9AB6448804E72DF" : "CheckIn-Back\/CheckIn-Store\/",
+    "123EAA09BA10C478095F593F73440454C35FB9CA" : "CheckIn-Back\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "ci-front",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "ci-front.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/joelarcos\/Checkin_Back.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "123EAA09BA10C478095F593F73440454C35FB9CA"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/joelarcos\/Checkin_Store.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "C363473A3EE3E428C0E484AEE9AB6448804E72DF"
+    }
+  ]
+}
