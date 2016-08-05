@@ -13,6 +13,8 @@ class CheckInViewController: UIViewController {
     
     @IBOutlet var phoneTextField: UITextField!
     @IBOutlet var nameTextField: UITextField!
+    @IBOutlet var stylistTextField: UITextField!
+    @IBOutlet var servicesTextField: UITextField!
     
     //var wpvc:WirelessProvidersTableViewController?
     var appDelegate:AppDelegate!
@@ -176,4 +178,15 @@ class CheckInViewController: UIViewController {
                 return true
             }
         }
+    
+    func textFieldShouldBeginEditing(textField: UITextField) -> Bool {
+        if textField == stylistTextField {
+            return false
+        }
+        else {
+            return true
+        }
+    }
+    
+
 }

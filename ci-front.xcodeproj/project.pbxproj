@@ -17,7 +17,6 @@
 		9D0CD77F1D49C22B00A8DAB2 /* APNumberPad in Resources */ = {isa = PBXBuildFile; fileRef = 9D0CD77E1D49C22B00A8DAB2 /* APNumberPad */; };
 		9D78BE341D551767005503AD /* StylistsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D78BE331D551767005503AD /* StylistsTableViewController.swift */; };
 		9D849F111D4D1B5800778BEE /* CheckInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D849F0E1D4D1B5800778BEE /* CheckInViewController.swift */; };
-		9D849F121D4D1B5800778BEE /* WirelessProvidersTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D849F0F1D4D1B5800778BEE /* WirelessProvidersTableViewController.swift */; };
 		9D849F131D4D1B5800778BEE /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D849F101D4D1B5800778BEE /* LoginViewController.swift */; };
 		9D849F171D4D1B8C00778BEE /* CheckinEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D849F151D4D1B8C00778BEE /* CheckinEvent.swift */; };
 		9D849F181D4D1B8C00778BEE /* CheckinEvent+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D849F161D4D1B8C00778BEE /* CheckinEvent+CoreDataProperties.swift */; };
@@ -59,7 +58,6 @@
 		9D0CD77E1D49C22B00A8DAB2 /* APNumberPad */ = {isa = PBXFileReference; lastKnownFileType = folder; path = APNumberPad; sourceTree = "<group>"; };
 		9D78BE331D551767005503AD /* StylistsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StylistsTableViewController.swift; sourceTree = "<group>"; };
 		9D849F0E1D4D1B5800778BEE /* CheckInViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CheckInViewController.swift; path = Controllers/CheckInViewController.swift; sourceTree = "<group>"; };
-		9D849F0F1D4D1B5800778BEE /* WirelessProvidersTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WirelessProvidersTableViewController.swift; path = Controllers/WirelessProvidersTableViewController.swift; sourceTree = "<group>"; };
 		9D849F101D4D1B5800778BEE /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoginViewController.swift; path = Controllers/LoginViewController.swift; sourceTree = "<group>"; };
 		9D849F151D4D1B8C00778BEE /* CheckinEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CheckinEvent.swift; path = CoreData/CheckinEvent.swift; sourceTree = "<group>"; };
 		9D849F161D4D1B8C00778BEE /* CheckinEvent+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "CheckinEvent+CoreDataProperties.swift"; path = "CoreData/CheckinEvent+CoreDataProperties.swift"; sourceTree = "<group>"; };
@@ -167,7 +165,6 @@
 			isa = PBXGroup;
 			children = (
 				9D849F0E1D4D1B5800778BEE /* CheckInViewController.swift */,
-				9D849F0F1D4D1B5800778BEE /* WirelessProvidersTableViewController.swift */,
 				9D849F101D4D1B5800778BEE /* LoginViewController.swift */,
 				9D78BE331D551767005503AD /* StylistsTableViewController.swift */,
 			);
@@ -329,7 +326,6 @@
 			files = (
 				9D849F131D4D1B5800778BEE /* LoginViewController.swift in Sources */,
 				9D849F1C1D4D1E7F00778BEE /* CheckIn_Store.xcdatamodeld in Sources */,
-				9D849F121D4D1B5800778BEE /* WirelessProvidersTableViewController.swift in Sources */,
 				9D849F1E1D4D3D8B00778BEE /* NSUserDefaults+CheckinStore.swift in Sources */,
 				9D849F171D4D1B8C00778BEE /* CheckinEvent.swift in Sources */,
 				9D849F111D4D1B5800778BEE /* CheckInViewController.swift in Sources */,

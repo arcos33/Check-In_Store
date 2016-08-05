@@ -21,7 +21,7 @@ class StylistsTableViewController: UITableViewController {
     }
     
     func loadProviders() {
-        wirelessProviders = Array(arrayLiteral: "Verizon Wireless", "AT&T", "T-Mobile", "Sprint", "Cricket", "Boost", "Virgin Mobile", "Other")
+        wirelessProviders = Array(arrayLiteral: "Juan", "Alicia", "Jose", "Raul", "Otro")
     }
     
     override func didReceiveMemoryWarning() {
