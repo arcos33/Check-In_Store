@@ -9,15 +9,21 @@
 import UIKit
 import CoreData
 
-class CheckInViewController: UIViewController {
+class CheckInViewController: UIViewController, StylistTableDelegate, ServicesOfferedTableDelegate {
     
     @IBOutlet var phoneTextField: UITextField!
     @IBOutlet var nameTextField: UITextField!
-    @IBOutlet var stylistTextField: UITextField!
-    @IBOutlet var servicesTextField: UITextField!
+    @IBOutlet var stylistButton: UIButton!
+    @IBOutlet var servicesButton: UIButton!
     
-    //var wpvc:WirelessProvidersTableViewController?
+    var stylistTable:StylistsTableViewController?
+    var servicesTable:ServicesOfferedTableViewController?
     var appDelegate:AppDelegate!
+    var stylists = Array<String>()
+    var servicesOffered = Array<String>()
+    var checkinEvent: CheckinEvent?
+    var serviceSelected: String?
+    var stylistSelected: String?
     
     //------------------------------------------------------------------------------
     // MARK: Lifecycle Methods
@@ -26,7 +32,69 @@ class CheckInViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        getStylists()
+        NSTimer.scheduledTimerWithTimeInterval(3.0, target: self, selector: #selector(getStylists), userInfo: nil, repeats: true)
+        getServices()
         // Do any additional setup after loading the view, typically from a nib.
+    }
+    
+    func getStylists() {
+        let url:NSURL = NSURL(string: "http://whitecoatlabs.co/checkin/develop/mobile_api/Get/get_stylists.php")!
+        let session = NSURLSession.sharedSession()
+        let request = NSMutableURLRequest(URL: url)
+        request.HTTPMethod = "POST"
+        request.cachePolicy = .ReloadIgnoringLocalCacheData
+        
+        let dateFormatter = NSDateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+
+        let task = session.dataTaskWithRequest(request) {(let data, let response, let error) in
+            guard let _:NSData = data, let _:NSURLResponse = response  where error == nil else {
+                print("error = \(error)")
+                return
+            }
+            do {
+                let json = try NSJSONSerialization.JSONObjectWithData(data!, options: .AllowFragments)
+                for object in json as! [Dictionary<String, String>] {
+                    if !self.stylists.contains(object["name"]!) {
+                        self.stylists.append(object["name"]!)
+                    }
+                }
+            }
+            catch {
+                print("error: \(error)")
+            }
+        }
+        task.resume()
+    }
+    
+    func getServices() {
+        let url:NSURL = NSURL(string: "http://whitecoatlabs.co/checkin/develop/mobile_api/Get/get_services.php")!
+        let session = NSURLSession.sharedSession()
+        let request = NSMutableURLRequest(URL: url)
+        request.HTTPMethod = "POST"
+        request.cachePolicy = .ReloadIgnoringLocalCacheData
+        
+        let dateFormatter = NSDateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        
+        let task = session.dataTaskWithRequest(request) {(let data, let response, let error) in
+            guard let _:NSData = data, let _:NSURLResponse = response  where error == nil else {
+                print("error = \(error)")
+                return
+            }
+            do {
+                let json = try NSJSONSerialization.JSONObjectWithData(data!, options: .AllowFragments)
+                for object in json as! [Dictionary<String, String>] {
+                    self.servicesOffered.append(object["name"]!)
+                }
+            }
+            catch {
+                print("error: \(error)")
+            }
+        }
+        task.resume()
+
     }
     
     override func prefersStatusBarHidden() -> Bool {
@@ -34,29 +102,38 @@ class CheckInViewController: UIViewController {
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-//        self.wpvc = segue.destinationViewController as? WirelessProvidersTableViewController
-//        self.wpvc!.preferredContentSize = CGSizeMake(200, 360)
-//        self.wpvc!.didSetProvider = true;
+        if segue.identifier == "stylistListSegue" {
+            self.stylistTable = segue.destinationViewController as? StylistsTableViewController
+            self.stylistTable?.delegate = self
+            self.stylistTable?.stylists = self.stylists
+        }
+        else {
+            self.servicesTable = segue.destinationViewController as? ServicesOfferedTableViewController
+            self.servicesTable?.delegate = self
+            self.servicesTable?.servicesOffered = self.servicesOffered
+        }
     }
     
     //------------------------------------------------------------------------------
     // MARK: Action Methods
     //-------------------------------------------------------------------------
     @IBAction func submit(sender: AnyObject) {
-        
+        print(self.stylistTable?.didSetStylist)
         if (formIsComplete()) {
-            let checkinEvent = NSEntityDescription.insertNewObjectForEntityForName("CheckinEvent", inManagedObjectContext: self.appDelegate.managedObjectContext) as! CheckinEvent
+            self.checkinEvent = NSEntityDescription.insertNewObjectForEntityForName("CheckinEvent", inManagedObjectContext: self.appDelegate.managedObjectContext) as? CheckinEvent
             
-            checkinEvent.uniqueID = NSUserDefaults.standardUserDefaults().createUniqueID()
-            checkinEvent.checkinTimestamp = NSDate()
-            checkinEvent.completedTimestamp = NSDate(timeIntervalSince1970: 0)
-            checkinEvent.name = nameTextField.text
-            checkinEvent.phone = phoneTextField.text
-            //checkinEvent.wirelessProvider = self.wpvc?.providerSelected
-            let tempCleanString1 = checkinEvent.phone?.stringByReplacingOccurrencesOfString("(", withString: "")
+            self.checkinEvent!.uniqueID = NSUserDefaults.standardUserDefaults().createUniqueID()
+            self.checkinEvent!.checkinTimestamp = NSDate()
+            self.checkinEvent!.completedTimestamp = NSDate(timeIntervalSince1970: 0)
+            self.checkinEvent!.name = nameTextField.text
+            self.checkinEvent!.phone = phoneTextField.text
+            self.checkinEvent!.stylist = self.stylistSelected
+            self.checkinEvent!.service = self.serviceSelected
+
+            let tempCleanString1 = self.checkinEvent!.phone?.stringByReplacingOccurrencesOfString("(", withString: "")
             let tempCleanString2 = tempCleanString1?.stringByReplacingOccurrencesOfString(")", withString: "")
             let tempCleanString3 = tempCleanString2?.stringByReplacingOccurrencesOfString("-", withString: "")
-            checkinEvent.status = "checkedin"
+            self.checkinEvent!.status = "checkedin"
             
             do {
                 try self.appDelegate.managedObjectContext.save()
@@ -72,12 +149,16 @@ class CheckInViewController: UIViewController {
                 
                 let dateFormatter = NSDateFormatter()
                 dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-                let tempCheckinTime = dateFormatter.stringFromDate(checkinEvent.checkinTimestamp!)
-                let tempCompletedTimestamp = dateFormatter.stringFromDate(checkinEvent.completedTimestamp!)
+                let tempCheckinTime = dateFormatter.stringFromDate(self.checkinEvent!.checkinTimestamp!)
+                let tempCompletedTimestamp = dateFormatter.stringFromDate(self.checkinEvent!.completedTimestamp!)
                 
-                let jsonData = "checkinTimestamp=\(tempCheckinTime)&completedTimestamp=\(tempCompletedTimestamp)&name=\(checkinEvent.name!)&phone=\(tempCleanString3!)&status=\(checkinEvent.status!)" .dataUsingEncoding(NSUTF8StringEncoding)
+                if self.checkinEvent!.stylist == nil {
+                    self.checkinEvent!.stylist = "sin preferencia"
+                }
                 
-                let task = session.uploadTaskWithRequest(request, fromData: jsonData, completionHandler: { (data, response, error) in
+                let requestString = "checkinTimestamp=\(tempCheckinTime)&completedTimestamp=\(tempCompletedTimestamp)&name=\(self.checkinEvent!.name!)&phone=\(tempCleanString3!)&status=\(self.checkinEvent!.status!)&stylist=\(self.checkinEvent!.stylist!)&service=\(self.checkinEvent!.service!)" .dataUsingEncoding(NSUTF8StringEncoding)
+                
+                let task = session.uploadTaskWithRequest(request, fromData: requestString, completionHandler: { (data, response, error) in
                     guard let _:NSData = data, let _:NSURLResponse = response where error == nil else {
                         print(error)
                         return
@@ -86,7 +167,7 @@ class CheckInViewController: UIViewController {
                     let responseBody = String(data: data!, encoding: NSUTF8StringEncoding)
                     print(responseBody)
                     dispatch_async(dispatch_get_main_queue(), {
-                        self.clearTextFields()
+                        self.resetUI()
                     })
                 })
                 task.resume()
@@ -98,20 +179,28 @@ class CheckInViewController: UIViewController {
         }
     }
     
-    func clearTextFields() {
+    func resetUI() {
         self.nameTextField.text = nil
         self.phoneTextField.text = nil
+        self.stylistButton.setTitle("elija Estilista", forState: .Normal)
+        self.stylistButton.setTitleColor(UIColor(red: 0.84, green: 0.84, blue: 0.86, alpha: 1.00), forState: .Normal)
+        self.servicesButton.setTitleColor(UIColor(red: 0.84, green: 0.84, blue: 0.86, alpha: 1.00), forState: .Normal)
+        self.servicesButton.setTitle("elija Servicio", forState: .Normal)
         self.nameTextField.resignFirstResponder()
         self.phoneTextField.resignFirstResponder()
     }
     
     func formIsComplete() -> Bool {
-        if nameTextField.text?.characters.count == 0 {
+        if self.nameTextField.text?.characters.count == 0 {
             presentAlert("Ingrese nombre")
             return false
         }
-        else if phoneTextField.text?.characters.count != 13 {
+        else if self.phoneTextField.text?.characters.count != 13 {
             presentAlert("Ingrese numero telefonico valido")
+            return false
+        }
+        else if self.serviceSelected == nil {
+            presentAlert("Elija un servicio")
             return false
         }
         else {
@@ -179,14 +268,18 @@ class CheckInViewController: UIViewController {
             }
         }
     
-    func textFieldShouldBeginEditing(textField: UITextField) -> Bool {
-        if textField == stylistTextField {
-            return false
-        }
-        else {
-            return true
-        }
+    // MARK: StylistsTableDelegate methods
+    func didSelectStylist(stylist: String) {
+        self.stylistButton.setTitle(stylist, forState: .Normal)
+        self.stylistButton.setTitleColor(UIColor.blackColor(), forState: .Normal)
+        self.stylistSelected = stylist
     }
     
+    // MARK: ServicesOfferedTableDelegate methods
+    func didSelectService(service: String) {
+        self.servicesButton.setTitle(service, forState: .Normal)
+        self.servicesButton.setTitleColor(UIColor.blackColor(), forState: .Normal)
+        self.serviceSelected = service
+    }
 
 }

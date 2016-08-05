@@ -23,4 +23,6 @@ extension CheckinEvent {
     @NSManaged var wirelessProvider: NSString?
     @NSManaged var phone: NSString?
     @NSManaged var status: NSString?
+    @NSManaged var stylist: NSString?
+    @NSManaged var service: NSString?
 }

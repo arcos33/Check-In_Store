@@ -228,12 +228,19 @@
                                         <rect key="frame" x="-23" y="-15" width="46" height="30"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="25"/>
-                                        <state key="normal" title="Servicio"/>
+                                        <state key="normal" title="elija Servicio">
+                                            <color key="titleColor" red="0.75686274509803919" green="0.75294117647058822" blue="0.7803921568627451" alpha="1" colorSpace="calibratedRGB"/>
+                                        </state>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                                                 <integer key="value" value="5"/>
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <segue destination="log-SY-wMC" kind="popoverPresentation" popoverAnchorView="AKa-61-JIG" id="QUX-ZB-hE6">
+                                                <popoverArrowDirection key="popoverArrowDirection" down="YES"/>
+                                            </segue>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gx8-81-7sm">
                                         <rect key="frame" x="-23" y="-15" width="46" height="30"/>
@@ -244,7 +251,9 @@
                                             </constraint>
                                         </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="25"/>
-                                        <state key="normal" title="Estilista"/>
+                                        <state key="normal" title="elija Estilista">
+                                            <color key="titleColor" red="0.81568627449999997" green="0.81568627449999997" blue="0.83529411760000005" alpha="1" colorSpace="calibratedRGB"/>
+                                        </state>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                                                 <integer key="value" value="5"/>
@@ -261,8 +270,8 @@
                                             </mask>
                                         </variation>
                                         <connections>
-                                            <segue destination="4ow-q3-Fmm" kind="popoverPresentation" popoverAnchorView="gx8-81-7sm" id="LNg-FI-8cY">
-                                                <popoverArrowDirection key="popoverArrowDirection" right="YES"/>
+                                            <segue destination="4ow-q3-Fmm" kind="popoverPresentation" identifier="stylistListSegue" popoverAnchorView="gx8-81-7sm" id="LNg-FI-8cY">
+                                                <popoverArrowDirection key="popoverArrowDirection" down="YES"/>
                                             </segue>
                                         </connections>
                                     </button>
@@ -428,11 +437,42 @@
                     <connections>
                         <outlet property="nameTextField" destination="nPz-aW-mGr" id="owV-tw-bga"/>
                         <outlet property="phoneTextField" destination="gZu-XV-H9B" id="dRd-by-mE9"/>
+                        <outlet property="servicesButton" destination="AKa-61-JIG" id="Fhr-HF-KO8"/>
+                        <outlet property="stylistButton" destination="gx8-81-7sm" id="f3g-Yh-iMj"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SII-Iu-FFR" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1021" y="433.5"/>
+        </scene>
+        <!--Services Offered Table View Controller-->
+        <scene sceneID="Cgi-Rg-s1P">
+            <objects>
+                <tableViewController id="log-SY-wMC" customClass="ServicesOfferedTableViewController" customModule="ci_front" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="hbv-dK-ebB" customClass="Services">
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="aYm-Of-yPa">
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="aYm-Of-yPa" id="2pI-4b-uqd">
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="log-SY-wMC" id="3b4-rL-BTj"/>
+                            <outlet property="delegate" destination="log-SY-wMC" id="TUw-cg-t8w"/>
+                        </connections>
+                    </tableView>
+                    <value key="contentSizeForViewInPopover" type="size" width="150" height="300"/>
+                    <nil key="simulatedStatusBarMetrics"/>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <size key="freeformSize" width="150" height="300"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="693-Qo-7j6" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1681" y="433.5"/>
         </scene>
         <!--Stylists Table View Controller-->
         <scene sceneID="O9S-zm-0EX">
@@ -457,10 +497,14 @@
                             <outlet property="delegate" destination="4ow-q3-Fmm" id="7Rc-VQ-z1l"/>
                         </connections>
                     </tableView>
+                    <value key="contentSizeForViewInPopover" type="size" width="150" height="300"/>
+                    <nil key="simulatedStatusBarMetrics"/>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <size key="freeformSize" width="150" height="300"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="AGK-qa-h9i" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1737" y="433.5"/>
+            <point key="canvasLocation" x="1012" y="966.75"/>
         </scene>
     </scenes>
     <resources>

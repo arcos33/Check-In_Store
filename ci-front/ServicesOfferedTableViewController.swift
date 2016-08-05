@@ -1,5 +1,5 @@
 //
-//  StylistsTableViewController.swift
+//  ServicesOfferedTableViewController.swift
 //  ci-front
 //
 //  Created by Joel on 8/5/16.
@@ -8,17 +8,16 @@
 
 import UIKit
 
-protocol StylistTableDelegate {
-    func didSelectStylist(stylist: String)
+protocol ServicesOfferedTableDelegate {
+    func didSelectService(service: String)
 }
 
-class StylistsTableViewController: UITableViewController {
+class ServicesOfferedTableViewController: UITableViewController {
     
-    var stylists: Array<String>!
-    var didSetStylist:Bool!
-    var stylistSelected:String!
-    var delegate: StylistTableDelegate?
-    
+    var servicesOffered: Array<String>!
+    var didSetProvider:Bool!
+    var providerSelected:String!
+    var delegate: ServicesOfferedTableDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,7 +35,7 @@ class StylistsTableViewController: UITableViewController {
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         // Try to get a cell
-        let provider = self.stylists[indexPath.row] as String
+        let provider = self.servicesOffered[indexPath.row] as String
         let cell = UITableViewCell()
         cell.textLabel?.text = provider
         cell.textLabel?.textAlignment = .Center
@@ -50,14 +49,14 @@ class StylistsTableViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.stylists.count
+        return self.servicesOffered.count
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        self.didSetStylist = true
-        let selection = self.stylists[indexPath.row]
-        self.stylistSelected = selection
+        self.didSetProvider = true
+        let selection = self.servicesOffered[indexPath.row]
+        self.providerSelected = selection
         self.dismissViewControllerAnimated(true, completion: nil)
-        self.delegate?.didSelectStylist(selection)
+        self.delegate?.didSelectService(selection)
     }
 }
