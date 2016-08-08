@@ -19,11 +19,15 @@ class CheckInViewController: UIViewController, StylistTableDelegate, ServicesOff
     var stylistTable:StylistsTableViewController?
     var servicesTable:ServicesOfferedTableViewController?
     var appDelegate:AppDelegate!
-    var stylists = Array<String>()
-    var servicesOffered = Array<String>()
     var checkinEvent: CheckinEvent?
     var serviceSelected: String?
     var stylistSelected: String?
+    
+    var stylists = [Stylist]()
+    var stylistMapping = Dictionary<String, AnyObject>()
+    var services = [Service]()
+    var serviceMapping = Dictionary<String, AnyObject>()
+    
     
     //------------------------------------------------------------------------------
     // MARK: Lifecycle Methods
@@ -35,6 +39,9 @@ class CheckInViewController: UIViewController, StylistTableDelegate, ServicesOff
         getStylists()
         NSTimer.scheduledTimerWithTimeInterval(3.0, target: self, selector: #selector(getStylists), userInfo: nil, repeats: true)
         getServices()
+        NSTimer.scheduledTimerWithTimeInterval(3.0, target: self, selector: #selector(getServices), userInfo: nil, repeats: true)
+
+
         // Do any additional setup after loading the view, typically from a nib.
     }
     
@@ -47,18 +54,47 @@ class CheckInViewController: UIViewController, StylistTableDelegate, ServicesOff
         
         let dateFormatter = NSDateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-
+        
         let task = session.dataTaskWithRequest(request) {(let data, let response, let error) in
             guard let _:NSData = data, let _:NSURLResponse = response  where error == nil else {
                 print("error = \(error)")
                 return
             }
             do {
-                let json = try NSJSONSerialization.JSONObjectWithData(data!, options: .AllowFragments)
-                for object in json as! [Dictionary<String, String>] {
-                    if !self.stylists.contains(object["name"]!) {
-                        self.stylists.append(object["name"]!)
+                let jsonResponseString = try NSJSONSerialization.JSONObjectWithData(data!, options: .AllowFragments)
+                
+                for object in jsonResponseString as! [Dictionary<String, String>] {
+                    let stylist = Stylist(status: object["status"]!, id: object["id"]!, name: object["name"]!)
+                    if (self.stylistMapping[object["id"]!] == nil) {
+                        let objectID = object["id"]!
+                        self.stylistMapping[objectID] = stylist
                     }
+                    else { // update it
+                        stylist.status = object["status"]
+                        self.stylistMapping[object["id"]!] = stylist
+                    }
+                }
+                var origIdArray = Array<String>()
+                for stylist in self.stylists {
+                    origIdArray.append(stylist.id)
+                }
+                
+                self.stylists = []
+                for (_, value) in self.stylistMapping {
+                    let stylist = value as! Stylist
+                    if stylist.status == "available" {
+                        self.stylists.append(stylist)
+                    }
+                }
+                var newIdArray = Array<String>()
+                for stylist in self.stylists {
+                    newIdArray.append(stylist.id)
+                }
+                
+                if origIdArray != newIdArray {
+                    NSNotificationCenter.defaultCenter().postNotificationName("CheckinVCDidReceiveStylistsNotification", object: self.stylists)
+                    origIdArray = []
+                    newIdArray = []
                 }
             }
             catch {
@@ -84,9 +120,38 @@ class CheckInViewController: UIViewController, StylistTableDelegate, ServicesOff
                 return
             }
             do {
-                let json = try NSJSONSerialization.JSONObjectWithData(data!, options: .AllowFragments)
-                for object in json as! [Dictionary<String, String>] {
-                    self.servicesOffered.append(object["name"]!)
+                let jsonResponseString = try NSJSONSerialization.JSONObjectWithData(data!, options: .AllowFragments)
+                for object in jsonResponseString as! [Dictionary<String, String>] {
+                    let service = Service(name: object["name"]!, id: object["id"]!, status: object["status"]!)
+                    if (self.serviceMapping[object["id"]!] == nil) {
+                        self.serviceMapping[object["id"]!] = service
+                    }
+                    else { // update it
+                        service.status = object["status"]
+                        self.serviceMapping[object["id"]!] = service
+                    }
+                }
+                var origIdArray = Array<String>()
+                for service in self.services {
+                    origIdArray.append(service.id)
+                }
+                
+                self.services = []
+                for (_, value) in self.serviceMapping {
+                    let service = value as! Service
+                    if service.status == "available" {
+                        self.services.append(service)
+                    }
+                }
+                var newIdArray = Array<String>()
+                for service in self.services {
+                    newIdArray.append(service.id)
+                }
+                
+                if origIdArray != newIdArray {
+                    NSNotificationCenter.defaultCenter().postNotificationName("CheckinVCDidReceiveServicesNotification", object: self.services)
+                    origIdArray = []
+                    newIdArray = []
                 }
             }
             catch {
@@ -94,7 +159,7 @@ class CheckInViewController: UIViewController, StylistTableDelegate, ServicesOff
             }
         }
         task.resume()
-
+        
     }
     
     override func prefersStatusBarHidden() -> Bool {
@@ -110,7 +175,7 @@ class CheckInViewController: UIViewController, StylistTableDelegate, ServicesOff
         else {
             self.servicesTable = segue.destinationViewController as? ServicesOfferedTableViewController
             self.servicesTable?.delegate = self
-            self.servicesTable?.servicesOffered = self.servicesOffered
+            self.servicesTable?.services = self.services
         }
     }
     
@@ -118,7 +183,6 @@ class CheckInViewController: UIViewController, StylistTableDelegate, ServicesOff
     // MARK: Action Methods
     //-------------------------------------------------------------------------
     @IBAction func submit(sender: AnyObject) {
-        print(self.stylistTable?.didSetStylist)
         if (formIsComplete()) {
             self.checkinEvent = NSEntityDescription.insertNewObjectForEntityForName("CheckinEvent", inManagedObjectContext: self.appDelegate.managedObjectContext) as? CheckinEvent
             
@@ -129,7 +193,7 @@ class CheckInViewController: UIViewController, StylistTableDelegate, ServicesOff
             self.checkinEvent!.phone = phoneTextField.text
             self.checkinEvent!.stylist = self.stylistSelected
             self.checkinEvent!.service = self.serviceSelected
-
+            
             let tempCleanString1 = self.checkinEvent!.phone?.stringByReplacingOccurrencesOfString("(", withString: "")
             let tempCleanString2 = tempCleanString1?.stringByReplacingOccurrencesOfString(")", withString: "")
             let tempCleanString3 = tempCleanString2?.stringByReplacingOccurrencesOfString("-", withString: "")
@@ -139,7 +203,7 @@ class CheckInViewController: UIViewController, StylistTableDelegate, ServicesOff
                 try self.appDelegate.managedObjectContext.save()
                 // DEVELOP
                 let url:NSURL = NSURL(string: "http://whitecoatlabs.co/checkin/develop/mobile_api/post_checkinEvent.php")!
-
+                
                 // LIVE
                 //let url:NSURL = NSURL(string: "http://www.whitecoatlabs.co/checkin/glamour/mobile_api/post_checkinEvent.php")!
                 let session = NSURLSession.sharedSession()
@@ -156,9 +220,9 @@ class CheckInViewController: UIViewController, StylistTableDelegate, ServicesOff
                     self.checkinEvent!.stylist = "sin preferencia"
                 }
                 
-                let requestString = "checkinTimestamp=\(tempCheckinTime)&completedTimestamp=\(tempCompletedTimestamp)&name=\(self.checkinEvent!.name!)&phone=\(tempCleanString3!)&status=\(self.checkinEvent!.status!)&stylist=\(self.checkinEvent!.stylist!)&service=\(self.checkinEvent!.service!)" .dataUsingEncoding(NSUTF8StringEncoding)
+                let jsonRequestString = "checkinTimestamp=\(tempCheckinTime)&completedTimestamp=\(tempCompletedTimestamp)&name=\(self.checkinEvent!.name!)&phone=\(tempCleanString3!)&status=\(self.checkinEvent!.status!)&stylist=\(self.checkinEvent!.stylist!)&service=\(self.checkinEvent!.service!)" .dataUsingEncoding(NSUTF8StringEncoding)
                 
-                let task = session.uploadTaskWithRequest(request, fromData: requestString, completionHandler: { (data, response, error) in
+                let task = session.uploadTaskWithRequest(request, fromData: jsonRequestString, completionHandler: { (data, response, error) in
                     guard let _:NSData = data, let _:NSURLResponse = response where error == nil else {
                         print(error)
                         return
@@ -214,59 +278,59 @@ class CheckInViewController: UIViewController, StylistTableDelegate, ServicesOff
         self.presentViewController(alert, animated: true, completion: nil)
     }
     
-        //------------------------------------------------------------------------------
-        // MARK: UITextField Delegate Methods
-        //------------------------------------------------------------------------------
-        
-        func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool
+    //------------------------------------------------------------------------------
+    // MARK: UITextField Delegate Methods
+    //------------------------------------------------------------------------------
+    
+    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool
+    {
+        if textField == self.phoneTextField
         {
-            if textField == self.phoneTextField
+            let newString = (textField.text! as NSString).stringByReplacingCharactersInRange(range, withString: string)
+            let components = newString.componentsSeparatedByCharactersInSet(NSCharacterSet.decimalDigitCharacterSet().invertedSet)
+            let decimalString = components.joinWithSeparator("") as NSString
+            
+            let length = decimalString.length
+            let hasLeadingOne = length > 0 && decimalString.characterAtIndex(0) == (1 as unichar)
+            
+            if length == 0 || (length > 10 && !hasLeadingOne) || length > 11
             {
-                let newString = (textField.text! as NSString).stringByReplacingCharactersInRange(range, withString: string)
-                let components = newString.componentsSeparatedByCharactersInSet(NSCharacterSet.decimalDigitCharacterSet().invertedSet)
-                let decimalString = components.joinWithSeparator("") as NSString
+                let newLength = (textField.text! as NSString).length + (string as NSString).length - range.length as Int
                 
-                let length = decimalString.length
-                let hasLeadingOne = length > 0 && decimalString.characterAtIndex(0) == (1 as unichar)
-                
-                if length == 0 || (length > 10 && !hasLeadingOne) || length > 11
-                {
-                    let newLength = (textField.text! as NSString).length + (string as NSString).length - range.length as Int
-                    
-                    return (newLength > 10) ? false : true
-                }
-                var index = 0 as Int
-                let formattedString = NSMutableString()
-                
-                if hasLeadingOne
-                {
-                    formattedString.appendString("1 ")
-                    index += 1
-                }
-                if (length - index) > 3
-                {
-                    let areaCode = decimalString.substringWithRange(NSMakeRange(index, 3))
-                    formattedString.appendFormat("(%@)", areaCode)
-                    index += 3
-                }
-                if length - index > 3
-                {
-                    let prefix = decimalString.substringWithRange(NSMakeRange(index, 3))
-                    formattedString.appendFormat("%@-", prefix)
-                    index += 3
-                }
-                
-                let remainder = decimalString.substringFromIndex(index)
-                formattedString.appendString(remainder)
-                textField.text = formattedString as String
-                
-                return false
+                return (newLength > 10) ? false : true
             }
-            else
+            var index = 0 as Int
+            let formattedString = NSMutableString()
+            
+            if hasLeadingOne
             {
-                return true
+                formattedString.appendString("1 ")
+                index += 1
             }
+            if (length - index) > 3
+            {
+                let areaCode = decimalString.substringWithRange(NSMakeRange(index, 3))
+                formattedString.appendFormat("(%@)", areaCode)
+                index += 3
+            }
+            if length - index > 3
+            {
+                let prefix = decimalString.substringWithRange(NSMakeRange(index, 3))
+                formattedString.appendFormat("%@-", prefix)
+                index += 3
+            }
+            
+            let remainder = decimalString.substringFromIndex(index)
+            formattedString.appendString(remainder)
+            textField.text = formattedString as String
+            
+            return false
         }
+        else
+        {
+            return true
+        }
+    }
     
     // MARK: StylistsTableDelegate methods
     func didSelectStylist(stylist: String) {
@@ -281,5 +345,28 @@ class CheckInViewController: UIViewController, StylistTableDelegate, ServicesOff
         self.servicesButton.setTitleColor(UIColor.blackColor(), forState: .Normal)
         self.serviceSelected = service
     }
+}
 
+class Stylist: NSObject {
+    var status: String!
+    var id: String!
+    var name: String!
+    
+    init(status: String, id: String, name: String) {
+        self.status = status
+        self.id = id
+        self.name = name
+    }
+}
+
+class Service: NSObject {
+    var name: String!
+    var id: String!
+    var status: String!
+    
+    init(name: String, id: String, status: String) {
+        self.name = name
+        self.id = id
+        self.status = status
+    }
 }

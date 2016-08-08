@@ -14,7 +14,7 @@ protocol StylistTableDelegate {
 
 class StylistsTableViewController: UITableViewController {
     
-    var stylists: Array<String>!
+    var stylists: [Stylist]!
     var didSetStylist:Bool!
     var stylistSelected:String!
     var delegate: StylistTableDelegate?
@@ -22,7 +22,14 @@ class StylistsTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(updateTableFromNotification) , name: "CheckinVCDidReceiveStylistsNotification", object: nil)
+    }
+    
+    func updateTableFromNotification(notification: NSNotification) {
+        self.stylists = notification.object! as! [Stylist]
+        dispatch_async(dispatch_get_main_queue(), {
+            self.tableView.reloadData()
+        })
     }
     
     override func didReceiveMemoryWarning() {
@@ -36,9 +43,9 @@ class StylistsTableViewController: UITableViewController {
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         // Try to get a cell
-        let provider = self.stylists[indexPath.row] as String
+        let stylist = self.stylists[indexPath.row] as Stylist
         let cell = UITableViewCell()
-        cell.textLabel?.text = provider
+        cell.textLabel?.text = stylist.name!
         cell.textLabel?.textAlignment = .Center
         return cell
     }
@@ -55,9 +62,9 @@ class StylistsTableViewController: UITableViewController {
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         self.didSetStylist = true
-        let selection = self.stylists[indexPath.row]
-        self.stylistSelected = selection
+        let stylist = self.stylists[indexPath.row]
+        self.stylistSelected = stylist.name!
         self.dismissViewControllerAnimated(true, completion: nil)
-        self.delegate?.didSelectStylist(selection)
+        self.delegate?.didSelectStylist(stylist.name!)
     }
 }

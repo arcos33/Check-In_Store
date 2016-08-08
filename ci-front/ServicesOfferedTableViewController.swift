@@ -14,14 +14,21 @@ protocol ServicesOfferedTableDelegate {
 
 class ServicesOfferedTableViewController: UITableViewController {
     
-    var servicesOffered: Array<String>!
+    var services = [Service]()
     var didSetProvider:Bool!
     var providerSelected:String!
     var delegate: ServicesOfferedTableDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(updateTableFromNotification) , name: "CheckinVCDidReceiveServicesNotification", object: nil)
+    }
+    
+    func updateTableFromNotification(notification: NSNotification) {
+        self.services = notification.object! as! [Service]
+        dispatch_async(dispatch_get_main_queue(), {
+            self.tableView.reloadData()
+        })
     }
     
     override func didReceiveMemoryWarning() {
@@ -35,9 +42,9 @@ class ServicesOfferedTableViewController: UITableViewController {
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         // Try to get a cell
-        let provider = self.servicesOffered[indexPath.row] as String
+        let service = self.services[indexPath.row] as Service
         let cell = UITableViewCell()
-        cell.textLabel?.text = provider
+        cell.textLabel?.text = service.name
         cell.textLabel?.textAlignment = .Center
         return cell
     }
@@ -49,14 +56,14 @@ class ServicesOfferedTableViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.servicesOffered.count
+        return self.services.count
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         self.didSetProvider = true
-        let selection = self.servicesOffered[indexPath.row]
-        self.providerSelected = selection
+        let service = self.services[indexPath.row]
+        self.providerSelected = service.name
         self.dismissViewControllerAnimated(true, completion: nil)
-        self.delegate?.didSelectService(selection)
+        self.delegate?.didSelectService(service.name)
     }
 }
