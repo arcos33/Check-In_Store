@@ -167,6 +167,8 @@ class CheckInViewController: UIViewController, StylistTableDelegate, ServicesOff
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        self.nameTextField.resignFirstResponder()
+        self.phoneTextField.resignFirstResponder()
         if segue.identifier == "stylistListSegue" {
             self.stylistTable = segue.destinationViewController as? StylistsTableViewController
             self.stylistTable?.delegate = self

@@ -48,9 +48,6 @@
                                         </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="25"/>
                                         <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardAppearance="alert"/>
-                                        <variation key="heightClass=regular" misplaced="YES">
-                                            <rect key="frame" x="63" y="108" width="200" height="50"/>
-                                        </variation>
                                     </textField>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Password" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="hmH-Mc-akR">
                                         <rect key="frame" x="64" y="131" width="200" height="50"/>
@@ -67,9 +64,6 @@
                                             <mask key="constraints">
                                                 <exclude reference="lJG-or-T4e"/>
                                             </mask>
-                                        </variation>
-                                        <variation key="heightClass=regular" misplaced="YES">
-                                            <rect key="frame" x="63" y="166" width="200" height="50"/>
                                         </variation>
                                     </textField>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Sh5-8L-GCv">
@@ -89,9 +83,6 @@
                                             <mask key="constraints">
                                                 <exclude reference="MFw-Nv-oaC"/>
                                             </mask>
-                                        </variation>
-                                        <variation key="heightClass=regular" misplaced="YES">
-                                            <rect key="frame" x="63" y="224" width="200" height="50"/>
                                         </variation>
                                         <connections>
                                             <action selector="authenticateUser:" destination="Y47-0r-WfE" eventType="touchUpInside" id="OC6-gl-GuV"/>
@@ -124,9 +115,6 @@
                                         <integer key="value" value="10"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
-                                <variation key="heightClass=regular" misplaced="YES">
-                                    <rect key="frame" x="137" y="247" width="328" height="306"/>
-                                </variation>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
@@ -184,6 +172,9 @@
                                                 <include reference="WDO-D3-xhc"/>
                                             </mask>
                                         </variation>
+                                        <connections>
+                                            <outlet property="delegate" destination="2xO-7T-0B5" id="tID-qa-dQm"/>
+                                        </connections>
                                     </textField>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Celular" textAlignment="center" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="gZu-XV-H9B">
                                         <rect key="frame" x="234" y="20" width="130" height="30"/>
