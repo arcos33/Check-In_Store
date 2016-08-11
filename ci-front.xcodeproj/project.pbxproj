@@ -15,6 +15,7 @@
 		9D0CD7691D498A9C00A8DAB2 /* CheckIn_StoreUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D0CD7681D498A9C00A8DAB2 /* CheckIn_StoreUITests.swift */; };
 		9D0CD7781D498FBA00A8DAB2 /* license.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 9D0CD7771D498FBA00A8DAB2 /* license.pdf */; };
 		9D0CD77F1D49C22B00A8DAB2 /* APNumberPad in Resources */ = {isa = PBXBuildFile; fileRef = 9D0CD77E1D49C22B00A8DAB2 /* APNumberPad */; };
+		9D2C619A1D5BA942006CA22F /* DataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D2C61991D5BA942006CA22F /* DataController.swift */; };
 		9D37E4DF1D5522A900DD4F7E /* ServicesOfferedTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D37E4DE1D5522A900DD4F7E /* ServicesOfferedTableViewController.swift */; };
 		9D78BE341D551767005503AD /* StylistsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D78BE331D551767005503AD /* StylistsTableViewController.swift */; };
 		9D849F111D4D1B5800778BEE /* CheckInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D849F0E1D4D1B5800778BEE /* CheckInViewController.swift */; };
@@ -43,7 +44,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		9D0CD7421D498A9C00A8DAB2 /* ci-front.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ci-front.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		9D0CD7421D498A9C00A8DAB2 /* Checkin-Front.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Checkin-Front.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		9D0CD7451D498A9C00A8DAB2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9D0CD74A1D498A9C00A8DAB2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		9D0CD74F1D498A9C00A8DAB2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -57,6 +58,7 @@
 		9D0CD76A1D498A9C00A8DAB2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9D0CD7771D498FBA00A8DAB2 /* license.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = license.pdf; sourceTree = "<group>"; };
 		9D0CD77E1D49C22B00A8DAB2 /* APNumberPad */ = {isa = PBXFileReference; lastKnownFileType = folder; path = APNumberPad; sourceTree = "<group>"; };
+		9D2C61991D5BA942006CA22F /* DataController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataController.swift; sourceTree = "<group>"; };
 		9D37E4DE1D5522A900DD4F7E /* ServicesOfferedTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServicesOfferedTableViewController.swift; sourceTree = "<group>"; };
 		9D78BE331D551767005503AD /* StylistsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StylistsTableViewController.swift; sourceTree = "<group>"; };
 		9D849F0E1D4D1B5800778BEE /* CheckInViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CheckInViewController.swift; path = Controllers/CheckInViewController.swift; sourceTree = "<group>"; };
@@ -105,7 +107,7 @@
 		9D0CD7431D498A9C00A8DAB2 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				9D0CD7421D498A9C00A8DAB2 /* ci-front.app */,
+				9D0CD7421D498A9C00A8DAB2 /* Checkin-Front.app */,
 				9D0CD7591D498A9C00A8DAB2 /* ci-frontTests.xctest */,
 				9D0CD7641D498A9C00A8DAB2 /* ci-frontTests.xctest */,
 			);
@@ -124,6 +126,7 @@
 				9D0CD7761D498FA500A8DAB2 /* Credits */,
 				9D0CD7541D498A9C00A8DAB2 /* Info.plist */,
 				9D849F1D1D4D3D8A00778BEE /* NSUserDefaults+CheckinStore.swift */,
+				9D2C61991D5BA942006CA22F /* DataController.swift */,
 			);
 			name = "CheckIn-Store";
 			path = "ci-front";
@@ -210,7 +213,7 @@
 			);
 			name = "ci-front";
 			productName = "CheckIn-Store";
-			productReference = 9D0CD7421D498A9C00A8DAB2 /* ci-front.app */;
+			productReference = 9D0CD7421D498A9C00A8DAB2 /* Checkin-Front.app */;
 			productType = "com.apple.product-type.application";
 		};
 		9D0CD7581D498A9C00A8DAB2 /* ci-frontTests */ = {
@@ -261,7 +264,7 @@
 				TargetAttributes = {
 					9D0CD7411D498A9C00A8DAB2 = {
 						CreatedOnToolsVersion = 7.3.1;
-						DevelopmentTeam = U33ZFLNE92;
+						DevelopmentTeam = 48K35CNGMH;
 					};
 					9D0CD7581D498A9C00A8DAB2 = {
 						CreatedOnToolsVersion = 7.3.1;
@@ -332,6 +335,7 @@
 				9D849F1C1D4D1E7F00778BEE /* CheckIn_Store.xcdatamodeld in Sources */,
 				9D849F1E1D4D3D8B00778BEE /* NSUserDefaults+CheckinStore.swift in Sources */,
 				9D849F171D4D1B8C00778BEE /* CheckinEvent.swift in Sources */,
+				9D2C619A1D5BA942006CA22F /* DataController.swift in Sources */,
 				9D849F111D4D1B5800778BEE /* CheckInViewController.swift in Sources */,
 				9D78BE341D551767005503AD /* StylistsTableViewController.swift in Sources */,
 				9D849F181D4D1B8C00778BEE /* CheckinEvent+CoreDataProperties.swift in Sources */,
@@ -484,7 +488,7 @@
 				INFOPLIST_FILE = "ci-front/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.whitecoatlabs.ci-front";
-				PRODUCT_NAME = "ci-front";
+				PRODUCT_NAME = "Checkin-Front";
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -499,7 +503,7 @@
 				INFOPLIST_FILE = "ci-front/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.whitecoatlabs.ci-front";
-				PRODUCT_NAME = "ci-front";
+				PRODUCT_NAME = "Checkin-Front";
 				PROVISIONING_PROFILE = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

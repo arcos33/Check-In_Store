@@ -19,28 +19,31 @@ class StylistsTableViewController: UITableViewController {
     var stylistSelected:String!
     var delegate: StylistTableDelegate?
     
-    
+    //------------------------------------------------------------------------------
+    // MARK: Lifecycle Methods
+    //------------------------------------------------------------------------------
     override func viewDidLoad() {
         super.viewDidLoad()
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(updateTableFromNotification) , name: "CheckinVCDidReceiveStylistsNotification", object: nil)
-    }
-    
-    func updateTableFromNotification(notification: NSNotification) {
-        self.stylists = notification.object! as! [Stylist]
-        dispatch_async(dispatch_get_main_queue(), {
-            self.tableView.reloadData()
-        })
-    }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
     override func prefersStatusBarHidden() -> Bool {
         return true
     }
     
+    //------------------------------------------------------------------------------
+    // MARK: Private Methods
+    //------------------------------------------------------------------------------
+    @objc func updateTableFromNotification(notification: NSNotification) {
+        self.stylists = notification.object! as! [Stylist]
+        dispatch_async(dispatch_get_main_queue(), {
+            self.tableView.reloadData()
+        })
+    }
+
+    //------------------------------------------------------------------------------
+    // MARK: TableView Methods
+    //------------------------------------------------------------------------------
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         // Try to get a cell
         let stylist = self.stylists[indexPath.row] as Stylist
@@ -49,9 +52,7 @@ class StylistsTableViewController: UITableViewController {
         cell.textLabel?.textAlignment = .Center
         return cell
     }
-    
-    // Other table view delegate/data source methods
-    
+        
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1
     }

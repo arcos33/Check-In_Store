@@ -18,148 +18,24 @@ class CheckInViewController: UIViewController, StylistTableDelegate, ServicesOff
     
     var stylistTable:StylistsTableViewController?
     var servicesTable:ServicesOfferedTableViewController?
-    var appDelegate:AppDelegate!
     var checkinEvent: CheckinEvent?
     var serviceSelected: String?
     var stylistSelected: String?
-    
     var stylists = [Stylist]()
     var stylistMapping = Dictionary<String, AnyObject>()
     var services = [Service]()
     var serviceMapping = Dictionary<String, AnyObject>()
-    
+    let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
     
     //------------------------------------------------------------------------------
     // MARK: Lifecycle Methods
     //------------------------------------------------------------------------------
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
         getStylists()
         NSTimer.scheduledTimerWithTimeInterval(3.0, target: self, selector: #selector(getStylists), userInfo: nil, repeats: true)
         getServices()
         NSTimer.scheduledTimerWithTimeInterval(3.0, target: self, selector: #selector(getServices), userInfo: nil, repeats: true)
-
-
-        // Do any additional setup after loading the view, typically from a nib.
-    }
-    
-    func getStylists() {
-        let url:NSURL = NSURL(string: "http://whitecoatlabs.co/checkin/develop/mobile_api/Get/get_stylists.php")!
-        let session = NSURLSession.sharedSession()
-        let request = NSMutableURLRequest(URL: url)
-        request.HTTPMethod = "POST"
-        request.cachePolicy = .ReloadIgnoringLocalCacheData
-        
-        let dateFormatter = NSDateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-        
-        let task = session.dataTaskWithRequest(request) {(let data, let response, let error) in
-            guard let _:NSData = data, let _:NSURLResponse = response  where error == nil else {
-                print("error = \(error)")
-                return
-            }
-            do {
-                let jsonResponseString = try NSJSONSerialization.JSONObjectWithData(data!, options: .AllowFragments)
-                
-                for object in jsonResponseString as! [Dictionary<String, String>] {
-                    let stylist = Stylist(status: object["status"]!, id: object["id"]!, name: object["name"]!)
-                    if (self.stylistMapping[object["id"]!] == nil) {
-                        let objectID = object["id"]!
-                        self.stylistMapping[objectID] = stylist
-                    }
-                    else { // update it
-                        stylist.status = object["status"]
-                        self.stylistMapping[object["id"]!] = stylist
-                    }
-                }
-                var origIdArray = Array<String>()
-                for stylist in self.stylists {
-                    origIdArray.append(stylist.id)
-                }
-                
-                self.stylists = []
-                for (_, value) in self.stylistMapping {
-                    let stylist = value as! Stylist
-                    if stylist.status == "available" {
-                        self.stylists.append(stylist)
-                    }
-                }
-                var newIdArray = Array<String>()
-                for stylist in self.stylists {
-                    newIdArray.append(stylist.id)
-                }
-                
-                if origIdArray != newIdArray {
-                    NSNotificationCenter.defaultCenter().postNotificationName("CheckinVCDidReceiveStylistsNotification", object: self.stylists)
-                    origIdArray = []
-                    newIdArray = []
-                }
-            }
-            catch {
-                print("error: \(error)")
-            }
-        }
-        task.resume()
-    }
-    
-    func getServices() {
-        let url:NSURL = NSURL(string: "http://whitecoatlabs.co/checkin/develop/mobile_api/Get/get_services.php")!
-        let session = NSURLSession.sharedSession()
-        let request = NSMutableURLRequest(URL: url)
-        request.HTTPMethod = "POST"
-        request.cachePolicy = .ReloadIgnoringLocalCacheData
-        
-        let dateFormatter = NSDateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-        
-        let task = session.dataTaskWithRequest(request) {(let data, let response, let error) in
-            guard let _:NSData = data, let _:NSURLResponse = response  where error == nil else {
-                print("error = \(error)")
-                return
-            }
-            do {
-                let jsonResponseString = try NSJSONSerialization.JSONObjectWithData(data!, options: .AllowFragments)
-                for object in jsonResponseString as! [Dictionary<String, String>] {
-                    let service = Service(name: object["name"]!, id: object["id"]!, status: object["status"]!)
-                    if (self.serviceMapping[object["id"]!] == nil) {
-                        self.serviceMapping[object["id"]!] = service
-                    }
-                    else { // update it
-                        service.status = object["status"]
-                        self.serviceMapping[object["id"]!] = service
-                    }
-                }
-                var origIdArray = Array<String>()
-                for service in self.services {
-                    origIdArray.append(service.id)
-                }
-                
-                self.services = []
-                for (_, value) in self.serviceMapping {
-                    let service = value as! Service
-                    if service.status == "available" {
-                        self.services.append(service)
-                    }
-                }
-                var newIdArray = Array<String>()
-                for service in self.services {
-                    newIdArray.append(service.id)
-                }
-                
-                if origIdArray != newIdArray {
-                    NSNotificationCenter.defaultCenter().postNotificationName("CheckinVCDidReceiveServicesNotification", object: self.services)
-                    origIdArray = []
-                    newIdArray = []
-                }
-            }
-            catch {
-                print("error: \(error)")
-            }
-        }
-        task.resume()
-        
     }
     
     override func prefersStatusBarHidden() -> Bool {
@@ -182,8 +58,171 @@ class CheckInViewController: UIViewController, StylistTableDelegate, ServicesOff
     }
     
     //------------------------------------------------------------------------------
+    // MARK: Private Methods
+    //------------------------------------------------------------------------------
+    @objc private func getStylists() {
+        let url:NSURL = NSURL(string: "http://whitecoatlabs.co/checkin/\(self.appDelegate.user)/mobile_api/get/get_stylists.php")!
+        let session = NSURLSession.sharedSession()
+        let request = NSMutableURLRequest(URL: url)
+        request.HTTPMethod = "POST"
+        request.cachePolicy = .ReloadIgnoringLocalCacheData
+        
+        let dateFormatter = NSDateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        
+        let task = session.dataTaskWithRequest(request) {(let data, let response, let error) in
+            guard let _:NSData = data, let _:NSURLResponse = response  where error == nil else {
+                print("Class:\(#file)\n Line:\(#line)\n Error:\(error)")
+                return
+            }
+            do {
+                let jsonResponseString = try NSJSONSerialization.JSONObjectWithData(data!, options: .AllowFragments)
+                let responseBody = String(data: data!, encoding: NSUTF8StringEncoding)
+                if responseBody != "null" {
+                    for object in jsonResponseString as! [Dictionary<String, String>] {
+                        let stylist = Stylist(status: object["status"]!, id: object["id"]!, name: object["name"]!)
+                        if (self.stylistMapping[object["id"]!] == nil) {
+                            let objectID = object["id"]!
+                            self.stylistMapping[objectID] = stylist
+                        }
+                        else { // update it
+                            stylist.status = object["status"]
+                            self.stylistMapping[object["id"]!] = stylist
+                        }
+                    }
+                    var origIdArray = Array<String>()
+                    for stylist in self.stylists {
+                        origIdArray.append(stylist.id)
+                    }
+                    
+                    self.stylists = []
+                    for (_, value) in self.stylistMapping {
+                        let stylist = value as! Stylist
+                        if stylist.status == "available" {
+                            self.stylists.append(stylist)
+                        }
+                    }
+                    var newIdArray = Array<String>()
+                    for stylist in self.stylists {
+                        newIdArray.append(stylist.id)
+                    }
+                    
+                    if origIdArray != newIdArray {
+                        NSNotificationCenter.defaultCenter().postNotificationName("CheckinVCDidReceiveStylistsNotification", object: self.stylists)
+                        origIdArray = []
+                        newIdArray = []
+                    }
+                    
+                }
+            }
+            catch {
+                print("Class:\(#file)\n Line:\(#line)\n Error:\(error)")
+            }
+        }
+        task.resume()
+    }
+    
+    @objc private func getServices() {
+        let url:NSURL = NSURL(string: "http://whitecoatlabs.co/checkin/\(self.appDelegate.user)/mobile_api/get/get_services.php")!
+        let session = NSURLSession.sharedSession()
+        let request = NSMutableURLRequest(URL: url)
+        request.HTTPMethod = "POST"
+        request.cachePolicy = .ReloadIgnoringLocalCacheData
+        
+        let dateFormatter = NSDateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        
+        let task = session.dataTaskWithRequest(request) {(let data, let response, let error) in
+            guard let _:NSData = data, let _:NSURLResponse = response  where error == nil else {
+                print("Class:\(#file)\n Line:\(#line)\n Error:\(error)")
+                return
+            }
+            do {
+                let responseBody = String(data: data!, encoding: NSUTF8StringEncoding)
+                if responseBody != "null" {
+                    let jsonResponseString = try NSJSONSerialization.JSONObjectWithData(data!, options: .AllowFragments)
+                    for object in jsonResponseString as! [Dictionary<String, String>] {
+                        let service = Service(name: object["name"]!, id: object["id"]!, status: object["status"]!)
+                        if (self.serviceMapping[object["id"]!] == nil) {
+                            self.serviceMapping[object["id"]!] = service
+                        }
+                        else { // update it
+                            service.status = object["status"]
+                            self.serviceMapping[object["id"]!] = service
+                        }
+                    }
+                    var origIdArray = Array<String>()
+                    for service in self.services {
+                        origIdArray.append(service.id)
+                    }
+                    
+                    self.services = []
+                    for (_, value) in self.serviceMapping {
+                        let service = value as! Service
+                        if service.status == "available" {
+                            self.services.append(service)
+                        }
+                    }
+                    var newIdArray = Array<String>()
+                    for service in self.services {
+                        newIdArray.append(service.id)
+                    }
+                    
+                    if origIdArray != newIdArray {
+                        NSNotificationCenter.defaultCenter().postNotificationName("CheckinVCDidReceiveServicesNotification", object: self.services)
+                        origIdArray = []
+                        newIdArray = []
+                    }
+                }
+                
+            }
+            catch {
+                print("Class:\(#file)\n Line:\(#line)\n Error:\(error)")
+            }
+        }
+        task.resume()
+        
+    }
+    
+    private func resetUI() {
+        self.nameTextField.text = nil
+        self.phoneTextField.text = nil
+        self.stylistButton.setTitle("elija Estilista", forState: .Normal)
+        self.stylistButton.setTitleColor(UIColor(red: 0.84, green: 0.84, blue: 0.86, alpha: 1.00), forState: .Normal)
+        self.servicesButton.setTitleColor(UIColor(red: 0.84, green: 0.84, blue: 0.86, alpha: 1.00), forState: .Normal)
+        self.servicesButton.setTitle("elija Servicio", forState: .Normal)
+        self.nameTextField.resignFirstResponder()
+        self.phoneTextField.resignFirstResponder()
+    }
+    
+    private func formIsComplete() -> Bool {
+        if self.nameTextField.text?.characters.count == 0 {
+            presentAlert("Ingrese nombre")
+            return false
+        }
+        else if self.phoneTextField.text?.characters.count != 13 {
+            presentAlert("Ingrese numero telefonico valido")
+            return false
+        }
+        else if self.serviceSelected == nil {
+            presentAlert("Elija un servicio")
+            return false
+        }
+        else {
+            return true
+        }
+    }
+    
+    private  func presentAlert(message: String) {
+        let alert = UIAlertController(title: "Falta informacion", message: message, preferredStyle: .Alert)
+        alert.addAction(UIAlertAction(title: "Ok", style: .Cancel, handler: nil))
+        self.presentViewController(alert, animated: true, completion: nil)
+    }
+
+    
+    //------------------------------------------------------------------------------
     // MARK: Action Methods
-    //-------------------------------------------------------------------------
+    //------------------------------------------------------------------------------
     @IBAction func submit(sender: AnyObject) {
         if (formIsComplete()) {
             self.checkinEvent = NSEntityDescription.insertNewObjectForEntityForName("CheckinEvent", inManagedObjectContext: self.appDelegate.managedObjectContext) as? CheckinEvent
@@ -203,11 +242,8 @@ class CheckInViewController: UIViewController, StylistTableDelegate, ServicesOff
             
             do {
                 try self.appDelegate.managedObjectContext.save()
-                // DEVELOP
-                let url:NSURL = NSURL(string: "http://whitecoatlabs.co/checkin/develop/mobile_api/post_checkinEvent.php")!
+                let url:NSURL = NSURL(string: "http://whitecoatlabs.co/checkin/\(self.appDelegate.user)/mobile_api/create/create_checkinEvent.php")!
                 
-                // LIVE
-                //let url:NSURL = NSURL(string: "http://www.whitecoatlabs.co/checkin/glamour/mobile_api/post_checkinEvent.php")!
                 let session = NSURLSession.sharedSession()
                 let request = NSMutableURLRequest(URL: url)
                 request.HTTPMethod = "POST"
@@ -226,7 +262,7 @@ class CheckInViewController: UIViewController, StylistTableDelegate, ServicesOff
                 
                 let task = session.uploadTaskWithRequest(request, fromData: jsonRequestString, completionHandler: { (data, response, error) in
                     guard let _:NSData = data, let _:NSURLResponse = response where error == nil else {
-                        print(error)
+                        print("Class:\(#file)\n Line:\(#line)\n Error:\(error)")
                         return
                     }
                     
@@ -239,51 +275,14 @@ class CheckInViewController: UIViewController, StylistTableDelegate, ServicesOff
                 task.resume()
             }
             catch {
-                print("error:\(error)")
-                
+                print("Class:\(#file)\n Line:\(#line)\n Error:\(error)")
             }
         }
-    }
-    
-    func resetUI() {
-        self.nameTextField.text = nil
-        self.phoneTextField.text = nil
-        self.stylistButton.setTitle("elija Estilista", forState: .Normal)
-        self.stylistButton.setTitleColor(UIColor(red: 0.84, green: 0.84, blue: 0.86, alpha: 1.00), forState: .Normal)
-        self.servicesButton.setTitleColor(UIColor(red: 0.84, green: 0.84, blue: 0.86, alpha: 1.00), forState: .Normal)
-        self.servicesButton.setTitle("elija Servicio", forState: .Normal)
-        self.nameTextField.resignFirstResponder()
-        self.phoneTextField.resignFirstResponder()
-    }
-    
-    func formIsComplete() -> Bool {
-        if self.nameTextField.text?.characters.count == 0 {
-            presentAlert("Ingrese nombre")
-            return false
-        }
-        else if self.phoneTextField.text?.characters.count != 13 {
-            presentAlert("Ingrese numero telefonico valido")
-            return false
-        }
-        else if self.serviceSelected == nil {
-            presentAlert("Elija un servicio")
-            return false
-        }
-        else {
-            return true
-        }
-    }
-    
-    func presentAlert(message: String) {
-        let alert = UIAlertController(title: "Falta informacion", message: message, preferredStyle: .Alert)
-        alert.addAction(UIAlertAction(title: "Ok", style: .Cancel, handler: nil))
-        self.presentViewController(alert, animated: true, completion: nil)
     }
     
     //------------------------------------------------------------------------------
     // MARK: UITextField Delegate Methods
     //------------------------------------------------------------------------------
-    
     func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool
     {
         if textField == self.phoneTextField
@@ -334,7 +333,9 @@ class CheckInViewController: UIViewController, StylistTableDelegate, ServicesOff
         }
     }
     
+    //------------------------------------------------------------------------------
     // MARK: StylistsTableDelegate methods
+    //------------------------------------------------------------------------------
     func didSelectStylist(stylist: String) {
         self.stylistButton.setTitle(stylist, forState: .Normal)
         self.stylistButton.setTitleColor(UIColor.blackColor(), forState: .Normal)

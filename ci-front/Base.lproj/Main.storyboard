@@ -8,7 +8,7 @@
         <!--Login View Controller-->
         <scene sceneID="Xx2-R2-3H4">
             <objects>
-                <viewController id="Y47-0r-WfE" customClass="LoginViewController" customModule="ci_front" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="Y47-0r-WfE" customClass="LoginViewController" customModule="Checkin_Front" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="bUA-cy-cKX"/>
                         <viewControllerLayoutGuide type="bottom" id="9De-kq-qbx"/>
@@ -37,7 +37,7 @@
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="glamour" borderStyle="roundedRect" placeholder="Username" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="oGB-B0-iMB">
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="demo" borderStyle="roundedRect" placeholder="Username" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="oGB-B0-iMB">
                                         <rect key="frame" x="64" y="73" width="200" height="50"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         <constraints>
@@ -59,7 +59,7 @@
                                             </constraint>
                                         </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="25"/>
-                                        <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" secureTextEntry="YES"/>
+                                        <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardAppearance="alert" secureTextEntry="YES"/>
                                         <variation key="default">
                                             <mask key="constraints">
                                                 <exclude reference="lJG-or-T4e"/>
@@ -141,7 +141,7 @@
         <!--Check In View Controller-->
         <scene sceneID="GlS-Qd-3kb">
             <objects>
-                <viewController id="2xO-7T-0B5" customClass="CheckInViewController" customModule="ci_front" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="2xO-7T-0B5" customClass="CheckInViewController" customModule="Checkin_Front" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="RRj-Ls-bbT"/>
                         <viewControllerLayoutGuide type="bottom" id="8aS-QF-W9I"/>
@@ -439,7 +439,7 @@
         <!--Services Offered Table View Controller-->
         <scene sceneID="Cgi-Rg-s1P">
             <objects>
-                <tableViewController id="log-SY-wMC" customClass="ServicesOfferedTableViewController" customModule="ci_front" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="log-SY-wMC" customClass="ServicesOfferedTableViewController" customModule="Checkin_Front" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="hbv-dK-ebB" customClass="Services">
                         <rect key="frame" x="0.0" y="0.0" width="150" height="300"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -471,17 +471,17 @@
         <!--Stylists Table View Controller-->
         <scene sceneID="O9S-zm-0EX">
             <objects>
-                <tableViewController id="4ow-q3-Fmm" customClass="StylistsTableViewController" customModule="ci_front" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController id="4ow-q3-Fmm" customClass="StylistsTableViewController" customModule="Checkin_Front" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="LQz-FM-qjG">
-                        <rect key="frame" x="0.0" y="0.0" width="150" height="300"/>
+                        <rect key="frame" x="0.0" y="0.0" width="250" height="300"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="756-W3-CTl">
-                                <rect key="frame" x="0.0" y="28" width="150" height="44"/>
+                                <rect key="frame" x="0.0" y="28" width="250" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="756-W3-CTl" id="Tv4-fp-PEx">
-                                    <rect key="frame" x="0.0" y="0.0" width="150" height="43"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="250" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                             </tableViewCell>
@@ -491,10 +491,10 @@
                             <outlet property="delegate" destination="4ow-q3-Fmm" id="7Rc-VQ-z1l"/>
                         </connections>
                     </tableView>
-                    <value key="contentSizeForViewInPopover" type="size" width="150" height="300"/>
+                    <value key="contentSizeForViewInPopover" type="size" width="250" height="300"/>
                     <nil key="simulatedStatusBarMetrics"/>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-                    <size key="freeformSize" width="150" height="300"/>
+                    <size key="freeformSize" width="250" height="300"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="AGK-qa-h9i" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

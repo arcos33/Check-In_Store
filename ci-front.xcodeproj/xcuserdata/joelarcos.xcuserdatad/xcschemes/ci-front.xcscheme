@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "9D0CD7411D498A9C00A8DAB2"
-               BuildableName = "ci-front.app"
+               BuildableName = "Checkin-Front.app"
                BlueprintName = "ci-front"
                ReferencedContainer = "container:ci-front.xcodeproj">
             </BuildableReference>
@@ -53,7 +53,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "9D0CD7411D498A9C00A8DAB2"
-            BuildableName = "ci-front.app"
+            BuildableName = "Checkin-Front.app"
             BlueprintName = "ci-front"
             ReferencedContainer = "container:ci-front.xcodeproj">
          </BuildableReference>
@@ -76,7 +76,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "9D0CD7411D498A9C00A8DAB2"
-            BuildableName = "ci-front.app"
+            BuildableName = "Checkin-Front.app"
             BlueprintName = "ci-front"
             ReferencedContainer = "container:ci-front.xcodeproj">
          </BuildableReference>
@@ -95,7 +95,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "9D0CD7411D498A9C00A8DAB2"
-            BuildableName = "ci-front.app"
+            BuildableName = "Checkin-Front.app"
             BlueprintName = "ci-front"
             ReferencedContainer = "container:ci-front.xcodeproj">
          </BuildableReference>
