@@ -2,7 +2,6 @@
 # EZ Check-in
 
 ![Screenshot](readme/screenshot_1.png)
-####Hello
 
 ---
 [Link to Acknowledgments](#Acknowledgments)
