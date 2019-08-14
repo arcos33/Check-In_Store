@@ -1,7 +1,7 @@
 # ReadME
 # EZ Check-in
 
-![Screenshot](Read\ Me/screenshot_1.png)
+![Screenshot](readme/screenshot_1.png)
 ####Hello
 
 ---
