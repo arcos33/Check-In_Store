@@ -1,7 +1,7 @@
 # ReadME
 # EZ Check-in
 
-![Screen Shot 2019-08-13 at 6.46.29 PM.png](:storage/fb91d426-d312-41cc-8c8c-26116727a3ba/493101f5.png)
+![screenshot_1.png](:screenshot_1.png)
 
 ---
 [Link to Acknowledgments](#Acknowledgments)
