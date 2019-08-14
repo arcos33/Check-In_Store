@@ -1,7 +1,7 @@
 # ReadME
 # EZ Check-in
 
-![Screenshot](ci-front/Read Me/screenshot_1.png)
+![Screenshot](Read\ Me/screenshot_1.png)
 ####Hello
 
 ---
