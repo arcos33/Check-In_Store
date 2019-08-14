@@ -1,7 +1,7 @@
 # ReadME
 # EZ Check-in
 
-![screenshot_1.png](Read Me/screenshot_1.png)
+![screenshot_1.png](/Read Me/screenshot_1.png?raw=true "Optional Title")
 
 ---
 [Link to Acknowledgments](#Acknowledgments)
