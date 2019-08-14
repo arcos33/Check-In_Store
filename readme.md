@@ -1,7 +1,8 @@
 # ReadME
 # EZ Check-in
 
-![Screenshot](Read Me/screenshot_1.png)
+![Screenshot](ci-front/Read Me/screenshot_1.png)
+Read Me/screenshot_1.png
 
 ---
 [Link to Acknowledgments](#Acknowledgments)
