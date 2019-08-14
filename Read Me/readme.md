@@ -1,7 +1,7 @@
 # ReadME
 # EZ Check-in
 
-![Screenshot](/screenshot_1.png)
+![Screenshot](screenshot_1.png)
 
 ---
 [Link to Acknowledgments](#Acknowledgments)
