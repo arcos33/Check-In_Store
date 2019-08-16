@@ -1,5 +1,4 @@
 # GetPostDemo
-![Screenshot1](ReadMe/screenshot_1.png)
 
 ![Screenshot](readme/screenshot_1.png)
 ---
