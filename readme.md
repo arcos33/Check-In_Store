@@ -1,8 +1,7 @@
-# ReadME
-# EZ Check-in
+# GetPostDemo
+![Screenshot1](ReadMe/screenshot_1.png)
 
 ![Screenshot](readme/screenshot_1.png)
-
 ---
 [Link to Acknowledgments](#Acknowledgments)
 One Paragraph of project description goes here
@@ -84,7 +83,7 @@ Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c6
 ## Versioning
 ---
 
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags).
+We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
 
 ## Authors
 ---
