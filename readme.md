@@ -1,4 +1,5 @@
-# GetPostDemo
+# Check-In Store
+This is the kiosk version of the app.
 
 ![Screenshot](readme/screenshot_1.png)
 ---
